@@ -140,5 +140,101 @@ describe('app routes', () => {
 
       expect(data.body).toEqual(expectation);
     });
+
+    test('returns new post', async() => {
+
+      const expectation = 
+        {
+          owner_id: expect.any(Number),
+          id: expect.any(Number),
+          year: 2055,
+          make: 'Overlord',
+          model: 'Only One',
+          color: 'Soylent',
+          type: 'Only kind',
+          img: 'https://www.yankodesign.com/images/design_news/2018/01/furia/furia_01.jpg',
+          rideable: true
+        };
+
+      const data = await fakeRequest(app)
+        .post('/karlsbikes/') 
+        .send({
+          year: 2055,
+          make: 'Overlord',
+          model: 'Only One',
+          color: 'Soylent',
+          type: 'Only kind',
+          img: 'https://www.yankodesign.com/images/design_news/2018/01/furia/furia_01.jpg',
+          rideable: true
+        })
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(data.body).toEqual(expectation);
+    });
+
+    test('returns changed post', async() => {
+
+      const expectation = 
+        {
+          owner_id: expect.any(Number),
+          id: expect.any(Number),
+          year: 2007,
+          make: 'Trek',
+          model: '1600 WSD',
+          color: 'Blue',
+          type: 'Road',
+          img: 'https://archive.trekbikes.com/images/bikes/2007/large/1600wsd_mineralblue.jpg',
+          rideable: false
+        };
+
+      await fakeRequest(app)
+        .put('/karlsbikes/1') 
+        .send({
+          year: 2007,
+          make: 'Trek',
+          model: '1600 WSD',
+          color: 'Blue',
+          type: 'Road',
+          img: 'https://archive.trekbikes.com/images/bikes/2007/large/1600wsd_mineralblue.jpg',
+          rideable: false
+        })
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      const realActual = await fakeRequest(app)
+        .get('/karlsbikes/1') 
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(realActual.body).toEqual(expectation);
+    });
+
+    test('deletes post', async() => {
+      const expectation = 
+        {
+          id: 2,
+          owner_id: 1,
+          year: 2006,
+          make: 'Fuji',
+          model: 'Absolute 3.0',
+          color: 'Black',
+          type: 'Road',
+          img: 'https://www.insideasi.com/downloads/bikes/Fuji/2006/absolute-30/absolute-30-lowres.jpg',
+          rideable: true
+        };
+      const data = await fakeRequest(app)
+        .delete('/karlsbikes/2') 
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      const deletedEntry = await fakeRequest(app)
+        .get('/karlsbikes/2') 
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(data.body).toEqual(expectation);
+      expect(deletedEntry.body).toEqual('');
+    });
   });
 });
