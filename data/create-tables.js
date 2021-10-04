@@ -16,17 +16,21 @@ async function run() {
                     id SERIAL PRIMARY KEY,
                     email VARCHAR(256) NOT NULL,
                     hash VARCHAR(512) NOT NULL
-                );           
+                );
+                CREATE TABLE types (
+                  id SERIAL PRIMARY KEY,
+                  type VARCHAR(512) NOT NULL
+              );   
                 CREATE TABLE karlsbikes (
                     id SERIAL PRIMARY KEY NOT NULL,
                     year INTEGER NOT NULL,
                     make VARCHAR(512) NOT NULL,
                     model VARCHAR(512) NOT NULL,
                     color VARCHAR(512) NOT NULL,
-                    type VARCHAR(512) NOT NULL,
                     img VARCHAR(512) NOT NULL,
                     rideable BOOLEAN,
-                    owner_id INTEGER NOT NULL REFERENCES users(id)
+                    owner_id INTEGER NOT NULL REFERENCES users(id),
+                    type_id INTEGER NOT NULL REFERENCES types(id)
             );
         `);
 
