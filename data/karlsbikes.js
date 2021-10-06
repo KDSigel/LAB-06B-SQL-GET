@@ -41,7 +41,7 @@ module.exports = [
     model: 'Everest',
     color: 'Yellow (now black)',
     type_id: 2,
-    img: 'https://digitalhippie.net/wp-content/uploads/2011/05/1988-mtb-tour-ernst-apollo3.jpg',
+    img: 'https://digitalhippie.net/wp-content/uploads/2011/01/1988-mtb-tour-apollo-everest-550.jpg',
     rideable: false
   },
   {
